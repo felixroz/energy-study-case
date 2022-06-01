@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  # app name
+  name: minio
+  # deployed yaml
+  namespace: cicd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/ntc-Felix/energy-study-case'
+    path: repository/helm-charts/minio
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values-development.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: deepstorage
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

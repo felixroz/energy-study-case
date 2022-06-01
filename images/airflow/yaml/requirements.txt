@@ -1,0 +1,5 @@
+airflow-provider-great-expectations==0.1.4
+apache-airflow-providers-amazon==3.4.0
+apache-airflow-providers-apache-spark==2.1.3
+minio==7.1.8
+pandas==1.3.4
