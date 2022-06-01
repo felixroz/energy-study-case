@@ -1,27 +1,21 @@
-# Configure MinIO Helm repo
 ```sh
-helm repo add minio https://charts.min.io/
+helm repo remove minio
+helm repo add minio https://operator.min.io/
+helm install --namespace minio-operator --create-namespace --generate-name minio/minio-operator
+kubectl apply -f https://github.com/minio/operator/blob/master/examples/tenant.yaml
 ```
 
-# Creating a secret
-```sh
-kubectl create secret generic my-minio-secret --from-literal=rootUser=foobarbaz --from-literal=rootPassword=foobarbazqux
-```
+# Get the JWT for logging in to the console:
+kubectl get secret $(kubectl get serviceaccount console-sa --namespace minio-operator -o jsonpath="{.secrets[0].name}") --namespace minio-operator -o jsonpath="{.data.token}" | base64 --decode 
 
-# Installing DirectPV to create a Persistent Volume
-- Install kubectl directpv plugin
-kubectl krew install directpv
+# Get the Operator Console URL by running these commands:
+kubectl --namespace minio-operator port-forward svc/console 9090:9090
+echo "Visit the Operator Console at http://127.0.0.1:9090"
 
-- Use the plugin to install directpv in your kubernetes cluster
-kubectl directpv install
+# MinIO Kubernetes
+kubectl krew update
+kubectl krew install minio
 
-- Ensure directpv has successfully started
-kubectl directpv info
+# Persistent Volume
+kubectl apply -f https://k8s.io/examples/pods/storage/pv-volume.yaml
 
-- List available drives in your cluster
-kubectl directpv drives ls
-
-# Installing the chart
-```sh
-helm install --namespace minio --set rootUser=rootuser,rootPassword=rootpass123 --generate-name minio/minio
-```
