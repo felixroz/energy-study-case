@@ -44,7 +44,8 @@ Here we are going to add the helm repos that we are going to use in this solutio
 helm repo add apache-airflow https://airflow.apache.org/
 helm repo add spark-operator https://googlecloudplatform.github.io/spark-on-k8s-operator
 helm repo add argo https://argoproj.github.io/argo-helm
-helm repo update
+helm repo add minio https://operator.min.io/ 
+helm repo update 
 ```
 
 # Argo CD
@@ -60,12 +61,12 @@ If you want to expose this service through a load balancer
 
 # Argo CD - Login - Port-Forward
 
-1. Run
+- 1. Run
 ```sh
 kubectl port-forward service/argocd-server -n cicd 8080:443
 ```
 open the browser on http://localhost:8080 and accept the certificate
-2. After reaching the UI the first time you can login with username: admin and the random password generated during the installation. You can find the password by running:
+- 2. After reaching the UI the first time you can login with username: admin and the random password generated during the installation. You can find the password by running:
 ```sh
 kubectl -n cicd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
