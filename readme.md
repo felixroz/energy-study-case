@@ -124,11 +124,13 @@ argocd cluster add $CLUSTER --in-cluster
 Register your repository in ArgoCD
 
 ```shell
-argocd repo add https://github.com/ntc-Felix/bigdata-on-k8s --username <username> --password <password>
+argocd repo add https://github.com/ntc-Felix/energy-study-case --username <username> --password <password>
 ```
 
+# Installing MinIO with ArgoCD
+```sh
+kubectl apply -f ./repository/app-manifests/deepstorage/minio-operator.yaml
+```
 
 # Installing AIRFLOW
 helm upgrade --install airflow apache-airflow/airflow --namespace orchestrator
-
-s

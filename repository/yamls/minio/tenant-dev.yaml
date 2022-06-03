@@ -1,0 +1,88 @@
+metadata:
+  generation: 1
+  name: energy-datalake
+  namespace: deepstorage
+  resourceVersion: "11772"
+  uid: 2570589b-cbe1-488e-8189-99fc4fd6261f
+scheduler:
+  name: ""
+spec:
+  configuration:
+    name: energy-datalake-env-configuration
+  credsSecret:
+    name: energy-datalake-secret
+  exposeServices:
+    console: true
+    minio: true
+  imagePullSecret: {}
+  log:
+    audit:
+      diskCapacityGB: 5
+    db:
+      resources: {}
+      volumeClaimTemplate:
+        metadata:
+          creationTimestamp: null
+          name: energy-datalake-log
+        spec:
+          accessModes:
+          - ReadWriteOnce
+          resources:
+            requests:
+              storage: "5368709120"
+          storageClassName: azurefile
+        status: {}
+    resources: {}
+  mountPath: /export
+  pools:
+  - affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: v1.min.io/tenant
+              operator: In
+              values:
+              - energy-datalake
+            - key: v1.min.io/pool
+              operator: In
+              values:
+              - pool-0
+          topologyKey: kubernetes.io/hostname
+    name: pool-0
+    resources:
+      limits:
+        memory: 32Gi
+      requests:
+        memory: 2Gi
+    servers: 4
+    volumeClaimTemplate:
+      metadata:
+        creationTimestamp: null
+        name: data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: "1073741824"
+        storageClassName: azurefile
+      status: {}
+    volumesPerServer: 1
+  prometheus:
+    diskCapacityGB: 5
+    resources: {}
+    storageClassName: azurefile
+  requestAutoCert: false
+  users:
+  - name: energy-datalake-user-0
+status:
+  availableReplicas: 0
+  certificates:
+    autoCertEnabled: false
+  currentState: Provisioning MinIO Statefulset
+  pools:
+  - ssName: energy-datalake-pool-0
+    state: PoolCreated
+  revision: 0
+  syncVersion: v4.2.4

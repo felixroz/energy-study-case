@@ -1,21 +1,30 @@
+# Installing MinIO using Helm
 ```sh
 helm repo remove minio
 helm repo add minio https://operator.min.io/
-helm install --namespace minio-operator --create-namespace --generate-name minio/minio-operator
+helm install --namespace deepstorage --create-namespace --generate-name minio/minio-operator
 kubectl apply -f https://github.com/minio/operator/blob/master/examples/tenant.yaml
 ```
 
-# Get the JWT for logging in to the console:
-kubectl get secret $(kubectl get serviceaccount console-sa --namespace minio-operator -o jsonpath="{.secrets[0].name}") --namespace minio-operator -o jsonpath="{.data.token}" | base64 --decode 
+# Installing MiniO using ArgoCD
+```sh
+kubectl apply -f /repository/app-manifests/deepstorage/minio-operator.yaml
+```
 
 # Get the Operator Console URL by running these commands:
-kubectl --namespace minio-operator port-forward svc/console 9090:9090
+```sh
+kubectl --namespace deepstorage port-forward svc/console 9090:9090
+```
 echo "Visit the Operator Console at http://127.0.0.1:9090"
 
-# MinIO Kubernetes
-kubectl krew update
-kubectl krew install minio
+# Get the JWT for logging in to the console:
+kubectl get secret $(kubectl get serviceaccount console-sa --namespace deepstorage -o jsonpath="{.secrets[0].name}") --namespace deepstorage -o jsonpath="{.data.token}" | base64 --decode 
 
-# Persistent Volume
-kubectl apply -f https://k8s.io/examples/pods/storage/pv-volume.yaml
+- Log in to the console using your JWT
+
+# Create Your Tenant
+```sh
+kubectl apply -f ./repository/yamls/minio/tenant-dev.yaml
+```
+- Remember to take note of your Console and Endpoint IPs
 

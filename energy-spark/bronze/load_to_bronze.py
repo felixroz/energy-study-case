@@ -4,6 +4,7 @@ from pyspark.sql import SparkSession
 from pyspark import SparkConf
 from pyspark.sql.types import DateType, StringType, TimestampType, DecimalType
 from pyspark.sql.functions import current_timestamp, col
+import databricks.koalas as ks
 
 # main spark program
 # init application
@@ -40,21 +41,20 @@ if __name__ == '__main__':
 
     # [landing zone area]
     # device and subscription
-    get_faker_file = "s3a://staging/*.csv"
+    get_staging_file_path = "s3a://staging/*.csv"
 
     # read device data
-    # json file from landing zone
-    df_faker = spark.read \
-        .format("csv") \
-        .option("inferSchema", "true") \
-        .option("header", "true") \
-        .load(get_faker_file)
+    # excel file from landing zone
+    df_raw_fueltype_by_uf_and_product = ks.read_excel(  get_staging_file_path
+                                                        , sheet_name='DPCache_m3')
 
-    # get number of partitions
-    print(df_faker.rdd.getNumPartitions())
+    df_raw_diesel_by_uf_and_type = ks.read_excel(  get_staging_file_path
+                                                        , sheet_name='DPCache_m3_3')
 
-    # count amount of rows ingested from lake
-    df_faker.count()
+    # transforming koalas dataframes into spark dataframes
+    df_raw_fueltype_by_uf_and_product = df_raw_fueltype_by_uf_and_product.to_spark()
+    df_raw_diesel_by_uf_and_type = df_raw_diesel_by_uf_and_type.to_spark()
+
 
     # [bronze zone area]
     # data lakehouse paradigm
@@ -62,7 +62,9 @@ if __name__ == '__main__':
     # usual scenario but not the best practice
     write_delta_mode = "overwrite"
     delta_bronze_zone = "s3a://lakehouse/bronze"
-    df_faker.write.mode(write_delta_mode).format("delta").save(delta_bronze_zone + "/faker/")
+
+    df_raw_fueltype_by_uf_and_product.write.mode(write_delta_mode).format("delta").save(delta_bronze_zone + "/sales_fueltype_by_uf_and_product/")
+    df_raw_diesel_by_uf_and_type.write.mode(write_delta_mode).format("delta").save(delta_bronze_zone + "/sales_diesel_by_uf_and_type/")
 
     # stop session
     spark.stop()
