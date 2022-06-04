@@ -20,21 +20,9 @@ If you already know how Azure works, it will bring the same facilities that a re
 
 ```shell
 kubectl create namespace orchestrator
-kubectl create namespace database
-kubectl create namespace ingestion
 kubectl create namespace processing
-kubectl create namespace datastore
 kubectl create namespace deepstorage
-kubectl create namespace tracing
-kubectl create namespace logging
-kubectl create namespace monitoring
-kubectl create namespace viz
 kubectl create namespace cicd
-kubectl create namespace app
-kubectl create namespace cost
-kubectl create namespace misc
-kubectl create namespace dataops
-kubectl create namespace gateway
 ```
 
 # Adding HELM repos
@@ -127,10 +115,27 @@ Register your repository in ArgoCD
 argocd repo add https://github.com/ntc-Felix/energy-study-case --username <username> --password <password>
 ```
 
-# Installing MinIO with ArgoCD
+# Installing MinIO Operator with ArgoCD
 ```sh
 kubectl apply -f ./repository/app-manifests/deepstorage/minio-operator.yaml
 ```
+
+# Installing MinIO app With ArgoCD
+```sh
+kubectl apply -f ./repository/app-manifests/deepstorage/minio.yaml
+```
+
+# Installing Spark Operator
+```sh
+helm repo add spark-operator https://googlecloudplatform.github.io/
+
+helm install spark-operator spark-operator/spark-operator --namespace processing --set image.tag=v1beta2-1.3.3-3.1.1,enableWebhook=true,logLevel=3
+```
+- Apply cluster role binding to ensure permissions
+```sh 
+kubectl apply -f /repository/yamls/spark-operator/crb-spark-operator-processing.yaml
+```
+
 
 # Installing AIRFLOW
 helm upgrade --install airflow apache-airflow/airflow --namespace orchestrator
