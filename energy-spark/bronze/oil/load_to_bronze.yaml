@@ -1,14 +1,14 @@
 apiVersion: "sparkoperator.k8s.io/v1beta2"
 kind: SparkApplication
 metadata:
-  name: etl-enriched-users-analysis
+  name: oil-load-to-bronze
   namespace: processing
 spec:
   type: Python
   mode: cluster
-  image: "owshq/etl-enriched-users-analysis:3.1.1"
+  image: "felixmarlon/load-to-bronze-oil:3.1.1"
   imagePullPolicy: Always
-  mainApplicationFile: "local:///app/etl-enriched-users-analysis.py"
+  mainApplicationFile: "local:///app/load_to_bronze.py"
   sparkVersion: "3.1.1"
   restartPolicy:
     type: OnFailure
@@ -17,9 +17,9 @@ spec:
     onSubmissionFailureRetries: 5
     onSubmissionFailureRetryInterval: 20
   hadoopConf:
-    "fs.s3a.endpoint": "http://34.133.5.33/"
-    "fs.s3a.access.key": "LWUHH7CJWZ7L7ZPI84DC"
-    "fs.s3a.secret.key": "IFf+gX+l6PIbcitIJZTGaNtuyd+FQZzoXwjj7CpH"
+    "fs.s3a.endpoint": "http://35.232.202.106"
+    "fs.s3a.access.key": "myaccesskey"
+    "fs.s3a.secret.key": "mysecretkey"
 
   driver:
     # cores: 1

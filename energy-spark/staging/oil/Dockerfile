@@ -15,7 +15,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install koalas
 
 # copy spark program
-COPY load_to_bronze.py /app/
+COPY data-extraction.py /app/
 
 # copy jar files
 COPY ./jars /opt/spark/jars

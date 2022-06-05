@@ -133,9 +133,30 @@ helm install spark-operator spark-operator/spark-operator --namespace processing
 ```
 - Apply cluster role binding to ensure permissions
 ```sh 
-kubectl apply -f /repository/yamls/spark-operator/crb-spark-operator-processing.yaml
+kubectl apply -f ./repository/yamls/spark-operator/crb-spark-operator-processing.yaml
 ```
 
+# Add Spark Applications to your cluster
+- staging area
+```sh
+kubectl apply -f ./energy-spark/staging/diesel/load_to_staging.yaml
+kubectl apply -f ./energy-spark/staging/oil/load_to_staging.yaml
+```
+- bronze area
+```sh
+kubectl apply -f ./energy-spark/bronze/diesel/load_to_bronze.yaml
+kubectl apply -f ./energy-spark/bronze/oil/load_to_bronze.yaml
+```
+
+- silver area
+```sh
+kubectl apply -f ./energy-spark/silver/load_to_silver.yaml
+```
+
+- gold area
+```sh
+kubectl apply -f ./energy-spark/gold/load_to_gold.yaml
+```
 
 # Installing AIRFLOW
 helm upgrade --install airflow apache-airflow/airflow --namespace orchestrator

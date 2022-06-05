@@ -1,14 +1,14 @@
 apiVersion: "sparkoperator.k8s.io/v1beta2"
 kind: SparkApplication
 metadata:
-  name: diesel-load-to-bronze
+  name: load-to-gold-energy
   namespace: processing
 spec:
   type: Python
   mode: cluster
-  image: "felixmarlon/load-to-bronze-diesel:3.1.1"
+  image: "felixmarlon/load-to-gold-energy:3.1.1"
   imagePullPolicy: Always
-  mainApplicationFile: "local:///app/load_to_bronze.py"
+  mainApplicationFile: "local:///app/load_to_gold.py"
   sparkVersion: "3.1.1"
   restartPolicy:
     type: OnFailure

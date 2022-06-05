@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
     # [bronze zone area]
     # device and subscription
-    bronze_location = "s3a://lakehouse/bronze/"
+    bronze_location = "s3a://lakehouse/bronze"
 
     # read oil
     # delta files from bronze zone
