@@ -1,9 +1,9 @@
 # import libraries
-from delta.tables import DeltaTable
+from delta.tables import *
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, concat, lit, date_format, current_timestamp,to_date
 from pyspark import SparkConf
 import databricks.koalas as ks
+
 # main spark program
 # init application
 if __name__ == '__main__':
@@ -12,7 +12,7 @@ if __name__ == '__main__':
     # set configs
     spark = SparkSession \
         .builder \
-        .appName("load-to-bronze") \
+        .appName("oil-data-extraction") \
         .config("spark.hadoop.fs.s3a.endpoint", "http://35.232.202.106") \
         .config("spark.hadoop.fs.s3a.access.key", "myaccesskey") \
         .config("spark.hadoop.fs.s3a.secret.key", "mysecretkey") \
@@ -25,46 +25,49 @@ if __name__ == '__main__':
         .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
         .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
         .config("spark.memory.offHeap.enabled","true")  \
-        .config("spark.memory.offHeap.size","10mb") \
+        .config("spark.memory.offHeap.size","100mb") \
         .getOrCreate()
 
-    # improving debugging with jupyter
-    # spark.conf.set('spark.sql.repl.eagerEval.enabled', True)
+    # show configured parameters
+    print(SparkConf().getAll())
 
     # set log level
-    # spark.sparkContext.setLogLevel("INFO")
+    spark.sparkContext.setLogLevel("INFO")
 
-    # [silver zone area]
-    # device and subscription
-    silver_location = "s3a://lakehouse/silver/"
+    # set location of files
+    # minio data lake engine
 
-    # read oil
-    # delta files from silver zone
-    df_fuel_sales_raw = spark.read \
-        .format("delta") \
-        .load(silver_location + '/fuel_sales/')
+    # [staging area]
+    # oil csv file
 
-    # select only columns that we want to serve in gold
-    df_fuel_sales_cleaned = df_fuel_sales_raw.select(
-        to_date('year_month','yyyy-MM').alias('year_month'),
-        'uf',
-        'product',
-        'unit',
-        col('volume').cast('double'),
-        col('created_at').cast('timestamp'),
-        'load_date'
-    )
+    sdf_oil_raw = spark.read.format("com.databricks.spark.csv").option("header","true").load("s3a://staging/oil")
 
-    # [gold zone area]
+    sdf_oil_raw = sdf_oil_raw.coalesce(1)
+
+    # [write to lakehouse]
+    # [bronze zone area]
     # data lakehouse paradigm
     # need to read the entire landing zone
     # usual scenario but not the best practice
     write_delta_mode = "overwrite"
-    delta_gold_zone = "s3a://lakehouse/gold"
-    
-    df_fuel_sales_cleaned.write.mode(write_delta_mode).format("delta")\
-        .partitionBy("load_date")\
-        .save(delta_gold_zone + "/fuel_sales_by_uf_type_&_year/")
+    delta_bronze_zone = "s3a://lakehouse/bronze"
+
+    if DeltaTable.isDeltaTable(spark, delta_bronze_zone + "/oil/"):
+        dt_diesel = DeltaTable.forPath(spark, delta_bronze_zone + "/oil/")
+        dt_diesel.alias("historical_data")\
+            .merge(
+                sdf_oil_raw.alias("new_data"),
+                '''
+                historical_data.PRODUTO = new_data.PRODUTO 
+                AND historical_data.created_at = new_data.created_at
+                AND historical_data.VOLUME = new_data.VOLUME''')\
+            .whenMatchedUpdateAll()\
+            .whenNotMatchedInsertAll()
+    else:
+        sdf_oil_raw.write.mode(write_delta_mode)\
+            .format("delta")\
+            .partitionBy("load_date")\
+            .save(delta_bronze_zone + "/oil/")
 
     # stop session
     spark.stop()

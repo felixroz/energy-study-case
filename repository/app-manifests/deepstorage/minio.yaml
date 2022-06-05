@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: 'https://github.com/ntc-Felix/energy-study-case'
-    path: repository/helm-charts/deepstorage/minio
+    path: repository/helm-charts/minio
     targetRevision: HEAD
     helm:
       valueFiles:
