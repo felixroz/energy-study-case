@@ -159,4 +159,6 @@ kubectl apply -f ./energy-spark/gold/load_to_gold.yaml
 ```
 
 # Installing AIRFLOW
-helm upgrade --install airflow apache-airflow/airflow --namespace orchestrator
+```sh
+kubectl apply -f ./repository/app-manifests/orchestrator/airflow.yaml
+```
