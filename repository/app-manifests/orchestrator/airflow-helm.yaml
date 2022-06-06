@@ -1,34 +1,29 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: airflow
-spec:
-  destination:
-    name: ''
-    namespace: orchestrator
-    server: 'https://kubernetes.default.svc'
-  source:
-    path: ''
-    repoURL: 'https://airflow.apache.org'
-    targetRevision: 1.6.0
-    chart: airflow
-    helm:
-      valueFiles:
-        - values.yaml
-      parameters:
-        - name: createUserJob.useHelmHooks
-          value: 'false'
-        - name: dags.gitSync.repo
-          value: 'https://github.com/ntc-Felix/energy-study-case'
-        - name: dags.gitSync.subPath
-          value: repository/helm-charts/airflow/dags
-        - name: migrateDatabaseJob.useHelmHooks
-          value: 'false'
-  project: default
-  syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
-      - ApplyOutOfSyncOnly=true
-    automated:
-      prune: false
-      selfHeal: false
+project: default
+source:
+  repoURL: 'https://airflow.apache.org'
+  targetRevision: 1.6.0
+  helm:
+    valueFiles:
+      - values.yaml
+    parameters:
+      - name: createUserJob.useHelmHooks
+        value: 'false'
+      - name: dags.gitSync.repo
+        value: 'https://github.com/ntc-Felix/energy-study-case'
+      - name: dags.gitSync.subPath
+        value: repository/helm-charts/airflow/dags
+      - name: migrateDatabaseJob.useHelmHooks
+        value: 'false'
+      - name: dags.gitSync.branch
+        value: master
+      - name: dags.gitSync.enabled
+        value: 'true'
+  chart: airflow
+destination:
+  server: 'https://kubernetes.default.svc'
+  namespace: orchestrator
+syncPolicy:
+  automated: {}
+  syncOptions:
+    - CreateNamespace=true
+    - ApplyOutOfSyncOnly=true
