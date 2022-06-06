@@ -1,5 +1,4 @@
 from asyncio import tasks
-from airflow.decorators import dag, task
 from airflow import DAG
 from airflow.models.baseoperator import chain
 from datetime import datetime, timedelta
@@ -105,10 +104,10 @@ with DAG(
         application_name="{{ task_instance.xcom_pull(task_ids='gold_fuel_spark_operator')['metadata']['name'] }}",
         kubernetes_conn_id="kubeconnect")
 
-    chain([staging_diesel_spark_operator, staging_oil_spark_operator ]
-        , [monitor_spark_staging_diesel, monitor_spark_staging_oil]
-        , [bronze_diesel_spark_operator, bronze_oil_spark_operator]
-        , [monitor_spark_bronze_diesel, monitor_spark_bronze_oil]
+    chain(staging_diesel_spark_operator, staging_oil_spark_operator 
+        , monitor_spark_staging_diesel, monitor_spark_staging_oil
+        , bronze_diesel_spark_operator, bronze_oil_spark_operator
+        , monitor_spark_bronze_diesel, monitor_spark_bronze_oil
         , silver_fuel_spark_operator
         , monitor_spark_silver_fuel
         , gold_fuel_spark_operator
