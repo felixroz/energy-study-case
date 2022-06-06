@@ -16,7 +16,7 @@ spec:
         - values-development.yaml
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: processing
+    namespace: datavirtualization
   syncPolicy:
     automated:
       prune: true
