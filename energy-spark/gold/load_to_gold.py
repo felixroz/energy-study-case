@@ -46,7 +46,9 @@ if __name__ == '__main__':
 
     # select only columns that we want to serve in gold
     df_fuel_sales_cleaned = df_fuel_sales_raw.select(
-        to_date('year_month','yyyy-MM').alias('year_month'),
+        date_format(
+            to_date('year_month','yyyy-MM')
+            , 'yyyy-MM').alias('year_month'),
         'uf',
         'product',
         'unit',
@@ -64,7 +66,7 @@ if __name__ == '__main__':
     
     df_fuel_sales_cleaned.write.mode(write_delta_mode).format("delta")\
         .partitionBy("load_date")\
-        .save(delta_gold_zone + "/fuel_sales_by_uf_type_&_year/")
+        .save(delta_gold_zone + "/fuel_sales_by_uf_type_and_year/")
 
     # stop session
     spark.stop()
