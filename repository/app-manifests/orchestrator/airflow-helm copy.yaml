@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  # app name
+  name: airflow
+  # deployed yaml
+  namespace: cicd
+spec:
+  project: default
+  source:
+    repoURL: 'https://airflow.apache.org'
+    targetRevision: 1.6.0
+    helm:
+      valueFiles:
+        - values.yaml
+      parameters:
+        - name: createUserJob.useHelmHooks
+          value: 'false'
+        - name: dags.gitSync.repo
+          value: ' https://nct-Felix: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@github.com/ntc-Felix/energy-study-case.git'
+        - name: dags.gitSync.subPath
+          value: repository/helm-charts/airflow/dags
+        - name: migrateDatabaseJob.useHelmHooks
+          value: 'false'
+        - name: dags.gitSync.branch
+          value: master
+        - name: dags.gitSync.enabled
+          value: 'true'
+        - name: logs.persistence.enabled
+          value: 'true'
+        - name: logs.persistence.size
+          value: '10Gi'
+        - name: 'AIRFLOW__CONN__REMOTE__LOGGING'
+          value: 'True'
+        - name: 'AIRFLOW__CONN__REMOTE__LOG_CONN_ID'
+          value: 'minio_log_storage'
+        - name: 'AIRFLOW__CORE__REMOTE_BASE_LOG_FOLDER'
+          value: 's3a://'
+        - name: 'AIRFLOW_CONN_MINIO_LOG_STORAGE'
+          value: "s3a://?aws_access_key_id=myaccesskey&aws_secret_access_key=mysecretkey"
+    chart: airflow
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: orchestrator
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true

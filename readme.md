@@ -174,3 +174,6 @@ k port-forward services/airflow-webserver 8000:8080 -n orchestrator
 kubectl apply -f ./repository/yamls/airflow/crb-spark-operator-airflow-orchestrator.yaml
 kubectl apply -f ./repository/yamls/airflow/crb-spark-operator-airflow-processing.yaml
 ```
+
+- Make your Kubernetes Connection by accessing the tab "Admin" > "Connections" name it as "kubeconnect"
+
