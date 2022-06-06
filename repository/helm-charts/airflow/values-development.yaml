@@ -1349,7 +1349,7 @@ dags:
     # ssh examples ssh://git@github.com/apache/airflow.git
     # git@github.com:apache/airflow.git
     # https example: https://github.com/apache/airflow.git
-    repo: https://nct-Felix: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@github.com/ntc-Felix/bigdata-on-k8s.git
+    repo: https://github.com/ntc-Felix/energy-study-case
     branch: master
     rev: HEAD
     depth: 1
