@@ -1,5 +1,6 @@
 from asyncio import tasks
-from airflow.decorators import dag
+from airflow.decorators import dag, task
+from airflow import DAG
 from airflow.models.baseoperator import chain
 from datetime import datetime, timedelta
 from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKubernetesOperator
@@ -8,7 +9,7 @@ from airflow.providers.cncf.kubernetes.sensors.spark_kubernetes import SparkKube
 # [START default_args]
 default_args = {
     'owner': 'marlon saura felix rozindo',
-    'start_date': datetime(2021, 6, 25),
+    'start_date': datetime(2022, 6, 4),
     'depends_on_past': False,
     'email': ['marlon.saura@gmail.com'],
     'email_on_failure': False,
@@ -17,8 +18,13 @@ default_args = {
     'retry_delay': timedelta(minutes=5)}
 # [END default_args]
 
-@dag(dag_id = "fuel_dag",default_args=default_args)
-def workflow():
+# [START instantiate_dag]
+with DAG(
+    'govbr-fuel-data-extraction',
+    default_args=default_args,
+    schedule_interval='@daily',
+    tags=['development', 's3', 'sensor', 'minio', 'spark', 'operator', 'k8s']
+) as dag:
     staging_diesel_spark_operator = SparkKubernetesOperator(
         task_id='staging_diesel_spark_operator',
         namespace='processing',
@@ -107,4 +113,3 @@ def workflow():
         , gold_fuel_spark_operator
         , monitor_spark_gold_fuel)
 
-workflow()
