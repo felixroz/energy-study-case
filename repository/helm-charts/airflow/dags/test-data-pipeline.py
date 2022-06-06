@@ -6,9 +6,9 @@ from airflow.operators.bash import BashOperator
 
 # [START default_args]
 default_args = {
-    'owner': 'luan moreno m. maciel',
+    'owner': 'marlon saura felix rozindo',
     'depends_on_past': False,
-    'email': ['luan.moreno@owshq.com'],
+    'email': ['marlon.saura@gmail.com'],
     'email_on_failure': True,
     'email_on_retry': False,
     'retries': 3,
