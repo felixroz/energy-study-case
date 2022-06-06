@@ -17,7 +17,7 @@ spec:
         - name: createUserJob.useHelmHooks
           value: 'false'
         - name: dags.gitSync.repo
-          value: ' https://nct-Felix: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@github.com/ntc-Felix/energy-study-case.git'
+          value: 'https://<your-git-hub-user>:<your-git-pass-secret-token>@github.com/<your-git-hub-user>/energy-study-case.git'
         - name: dags.gitSync.subPath
           value: repository/helm-charts/airflow/dags
         - name: migrateDatabaseJob.useHelmHooks
