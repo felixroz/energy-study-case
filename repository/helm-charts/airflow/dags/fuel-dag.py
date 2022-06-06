@@ -19,7 +19,6 @@ default_args = {
 
 @dag(dag_id = "fuel_dag",default_args=default_args)
 def workflow():
-    
     staging_diesel_spark_operator = SparkKubernetesOperator(
         task_id='staging_diesel_spark_operator',
         namespace='processing',
@@ -108,3 +107,4 @@ def workflow():
         , gold_fuel_spark_operator
         , monitor_spark_gold_fuel)
 
+workflow()
