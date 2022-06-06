@@ -139,13 +139,13 @@ kubectl apply -f ./repository/yamls/spark-operator/crb-spark-operator-processing
 # Add Spark Applications to your cluster
 - staging area
 ```sh
-kubectl apply -f ./energy-spark/staging/diesel/load_to_staging.yaml
-kubectl apply -f ./energy-spark/staging/oil/load_to_staging.yaml
+kubectl apply -f ./energy-spark/staging/diesel/load_to_staging_diesel.yaml
+kubectl apply -f ./energy-spark/staging/oil/load_to_staging_oil.yaml
 ```
 - bronze area
 ```sh
-kubectl apply -f ./energy-spark/bronze/diesel/load_to_bronze.yaml
-kubectl apply -f ./energy-spark/bronze/oil/load_to_bronze.yaml
+kubectl apply -f ./energy-spark/bronze/diesel/load_to_bronze_diesel.yaml
+kubectl apply -f ./energy-spark/bronze/oil/load_to_bronze_oil.yaml
 ```
 
 - silver area
@@ -159,6 +159,18 @@ kubectl apply -f ./energy-spark/gold/load_to_gold.yaml
 ```
 
 # Installing AIRFLOW
+- install airflow with helm pattern
 ```sh
-kubectl apply -f ./repository/app-manifests/orchestrator/airflow.yaml
+kubectl apply -f ./repository/app-manifests/orchestrator/airflow-helm.yaml
+```
+
+- Use port-forward to access the UI
+```sh
+k port-forward services/airflow-webserver 8000:8080 -n orchestrator
+```
+
+- Garantee access to Spark from Airflow
+```sh
+kubectl apply -f ./repository/yamls/airflow/crb-spark-operator-airflow-orchestrator.yaml
+kubectl apply -f ./repository/yamls/airflow/crb-spark-operator-airflow-processing.yaml
 ```
