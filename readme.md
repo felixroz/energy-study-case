@@ -175,5 +175,9 @@ kubectl apply -f ./repository/yamls/airflow/crb-spark-operator-airflow-orchestra
 kubectl apply -f ./repository/yamls/airflow/crb-spark-operator-airflow-processing.yaml
 ```
 
-- Make your Kubernetes Connection by accessing the tab "Admin" > "Connections" name it as "kubeconnect"
+- Make your Kubernetes Connection by accessing the tab "Admin" > "Connections" 
+    - name it as "kubeconnect"
+    - select the service Kubernetes
+    - mark the box "in-cluster"
 
+    
