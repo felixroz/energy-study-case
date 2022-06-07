@@ -1,5 +1,5 @@
 # Solution Architecture
-![alt text][https://github.com/ntc-Felix/energy-study-case/blob/master/docs/images/solution.png]
+![alt text](https://github.com/ntc-Felix/energy-study-case/blob/master/docs/images/solution.png)
 
 # Requirements
 First you have setted up your environment and your cluster, make sure you have installed:
