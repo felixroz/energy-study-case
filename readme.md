@@ -201,3 +201,10 @@ kubectl apply -f ./repository/yamls/airflow/crb-spark-operator-airflow-processin
     - mark the box "in-cluster"
 
 
+# Great Expecations
+-  Duplication checks
+-  Not-null checks
+-  Format checks
+-  Consistency checks
+-  Distribution/Anomaly checks
+-  Freshness checks

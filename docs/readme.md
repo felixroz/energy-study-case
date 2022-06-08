@@ -1,3 +1,6 @@
+# ArgoCD applications
+![alt text](https://github.com/ntc-Felix/energy-study-case/blob/master/docs/images/argocd.png)
+
 # MinIO bucket list
 ![alt text](https://github.com/ntc-Felix/energy-study-case/blob/master/docs/images/minio-bucket-list.png)
 
