@@ -29,7 +29,7 @@
 ![alt text](https://github.com/ntc-Felix/energy-study-case/blob/master/docs/images/lakehouse-silver-fuel-sales-partition-strategy.png)
 
 # Airflow Test Job
-![alt text](https://github.com/ntc-Felix/energy-study-case/blob/master/docs/images/test-job.jpg.png)
+![alt text](https://github.com/ntc-Felix/energy-study-case/blob/master/docs/images/test-job.jpg)
 
 # Airflow JOB
 ![alt text](https://github.com/ntc-Felix/energy-study-case/blob/master/docs/images/original-job.jpg)

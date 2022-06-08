@@ -1,6 +1,23 @@
 # Solution Architecture
 ![alt text](https://github.com/ntc-Felix/energy-study-case/blob/master/docs/images/solution.png)
 
+# Deployment
+ - Every component was deployed using Kubernetes
+ - We are using ArgoCD as our CD tool and also to monitor our applications
+ ![alt text](https://github.com/ntc-Felix/energy-study-case/blob/master/docs/images/argo-and-kubernetes.png)
+
+# Tools used in this project
+- Terraform (read ['GKE/AKS deployment'](https://github.com/ntc-Felix/energy-study-case/tree/master/iac))
+- MinIO
+- ArgoCD
+- Docker (registry and containerization)
+- Kubernetes
+- Apache Spark
+- Apache Airflow
+- Delta Lake
+- Great Expectations (coming soon)
+- Potgress (coming soon)
+
 # Requirements
 First you have setted up your environment and your cluster, make sure you have installed:
 * kubernetes cli
