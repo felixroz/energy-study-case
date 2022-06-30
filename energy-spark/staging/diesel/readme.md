@@ -2,7 +2,7 @@
 ```sh
 docker build . -t load-to-staging-diesel:3.1.1
 
-docker tag load-to-staging-diesel:3.1.1 <your-docker-hub>/load-to-bronze-diesel:3.1.1
+docker tag load-to-staging-diesel:3.1.1 <your-docker-hub>/load-to-staging-diesel:3.1.1
 
 docker push <your-docker-hub>/load-to-staging-diesel:3.1.1
 ```

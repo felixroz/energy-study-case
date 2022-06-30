@@ -27,13 +27,6 @@ First you have setted up your environment and your cluster, make sure you have i
 * [ArgoCD CLI](https://argo-cd.readthedocs.io/en/stable/cli_installation/#windows)
 * GitBash (if you are using windows)
 
-# Cluster Specifications (Recommended)
-* microsoft azure aks cost
-* 7 = virtual machines (ds3v2)
-* 4 vcpus & 14 gb of ram
-* 1,170.19
-* ~ R$ 10.000 ~ $2000/month
-
 # Creating Namespaces on your cluster
 By doing this you can divide your resources logically
 If you already know how Azure works, it will bring the same facilities that a resource group brings to you

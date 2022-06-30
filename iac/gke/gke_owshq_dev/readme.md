@@ -48,7 +48,7 @@ terraform plan
 terraform apply -auto-approve
 
 # fetch kubernetes cluster info
-gcloud container clusters get-credentials 
+gcloud container clusters get-credentials <name-of-your-project> --region <name-of-your-region>
 # result : your-project-id-gke --region us-central1
 
 # remove resources [rg]
